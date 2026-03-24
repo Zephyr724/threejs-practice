@@ -5,6 +5,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { ThreeDropdown } from "./ThreeDropdown";
+import { CameraProvider, useCamera } from "../context/CameraContext";
 
 // 立方体六个面的位置和旋转（平面几何体）
 const FACES = [
@@ -87,6 +88,8 @@ function SceneContent({
 }: {
   onOpenModal: (title: string, url: string) => void;
 }) {
+  const { controlsRef } = useCamera(); // 获取 controlsRef
+
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState<
     [number, number, number]
@@ -154,6 +157,8 @@ function SceneContent({
           />
         </Html>
       )}
+      {/* 将 ref 绑定到 OrbitControls */}
+      <OrbitControls ref={controlsRef} enableZoom enablePan />
     </>
   );
 }
@@ -167,7 +172,6 @@ export function ThreeScene({
   return (
     <div className="w-full h-full">
       <Canvas camera={{ position: [2, 2, 3], fov: 50 }}>
-        <OrbitControls enableZoom enablePan />
         <SceneContent onOpenModal={onOpenModal} />
       </Canvas>
     </div>

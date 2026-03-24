@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { ThreeScene } from "./components/ThreeScene";
 import { UIButtons } from "./components/UIButtons";
 import { ProjectModal } from "./components/ProjectModal";
+import { CameraProvider } from "./context/CameraContext";
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -25,21 +26,23 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      {/* 3D 场景 */}
-      <ThreeScene onOpenModal={openModal} />
+    <CameraProvider>
+      <div className="relative w-full h-screen overflow-hidden">
+        {/* 3D 场景 */}
+        <ThreeScene onOpenModal={openModal} />
 
-      {/* 常驻 UI 按钮 */}
-      <UIButtons />
+        {/* 常驻 UI 按钮 */}
+        <UIButtons />
 
-      {/* 项目模态框 */}
-      {modalOpen && modalContent && (
-        <ProjectModal
-          title={modalContent.title}
-          url={modalContent.url}
-          onClose={closeModal}
-        />
-      )}
-    </div>
+        {/* 项目模态框 */}
+        {modalOpen && modalContent && (
+          <ProjectModal
+            title={modalContent.title}
+            url={modalContent.url}
+            onClose={closeModal}
+          />
+        )}
+      </div>
+    </CameraProvider>
   );
 }
